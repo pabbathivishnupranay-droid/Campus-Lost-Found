@@ -1,0 +1,7 @@
+package com.campus.lostfound.entity.enums;
+
+public enum ClaimStatus {
+    PENDING,
+    APPROVED,
+    REJECTED
+}
