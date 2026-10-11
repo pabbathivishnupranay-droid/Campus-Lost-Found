@@ -14,7 +14,7 @@ import {
   Loader2,
   RefreshCw
 } from 'lucide-react';
-import api from '../api/axiosInstance';
+import api, { getAssetUrl } from '../api/axiosInstance';
 
 export default function AdminClaimsView({ onToast }) {
   const [claims, setClaims] = useState([]);
@@ -184,7 +184,7 @@ export default function AdminClaimsView({ onToast }) {
                     <div className="flex items-start space-x-3">
                       {claim.item?.imageUrl ? (
                         <img
-                          src={claim.item.imageUrl}
+                          src={getAssetUrl(claim.item.imageUrl)}
                           alt={claim.item.title}
                           className="w-16 h-16 rounded-xl object-cover border border-white/10 shrink-0"
                         />

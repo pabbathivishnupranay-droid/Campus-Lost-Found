@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, ShieldCheck, Loader2, AlertCircle } from 'lucide-react';
-import api from '../api/axiosInstance';
+import api, { getAssetUrl } from '../api/axiosInstance';
 import { useAuth } from '../context/AuthContext';
 
 export default function ClaimModal({ isOpen, onClose, item, onClaimSuccess, onToast, onOpenAuthModal }) {
@@ -71,7 +71,7 @@ export default function ClaimModal({ isOpen, onClose, item, onClaimSuccess, onTo
           <div className="p-3.5 rounded-xl bg-slate-900/60 border border-white/5 flex gap-3 items-center">
             {item.imageUrl ? (
               <img
-                src={item.imageUrl}
+                src={getAssetUrl(item.imageUrl)}
                 alt={item.title}
                 className="w-14 h-14 rounded-lg object-cover border border-white/10 shrink-0"
               />

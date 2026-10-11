@@ -132,3 +132,38 @@ The frontend will start at `http://localhost:5173`.
 - `GET /api/claims/my` — Get claims submitted by the current user (Authenticated Student)
 - `GET /api/claims` — Review all campus claims (Security / Admin)
 - `PUT /api/claims/{id}/status` — Approve or Reject a claim (Security / Admin)
+
+---
+
+## ☁️ Deployment Guide
+
+### 1. Backend on Render
+1. Log in to [Render](https://render.com) and click **New +** -> **Web Service** (or use **Blueprint** with `render.yaml`).
+2. Connect repository `pabbathivishnupranay-droid/Campus-Lost-Found`.
+3. Choose **Docker** environment:
+   - **Docker Context**: `./backend`
+   - **Dockerfile Path**: `./backend/Dockerfile`
+   - Alternatively (Native Java):
+     - Root Directory: `backend`
+     - Build Command: `./mvnw clean package -DskipTests`
+     - Start Command: `java -Dserver.port=$PORT -jar target/campus-lost-found-1.0.0.jar`
+4. Set Environment Variables:
+   - `SPRING_DATASOURCE_URL`: `jdbc:mysql://<your-db-host>:3306/<database>?useSSL=false&allowPublicKeyRetrieval=true`
+   - `SPRING_DATASOURCE_USERNAME`: `<db-user>`
+   - `SPRING_DATASOURCE_PASSWORD`: `<db-password>`
+   - `JWT_SECRET`: `9a2f8c4e7b1d6f3a8e5c2b9d0f1a4e7c3b6a9d2f5e8c1b4a7d0e3f6a9b2c5d8e` (or custom 64-char hex)
+   - `APP_CORS_ALLOWED_ORIGINS`: `http://localhost:*,https://*.vercel.app`
+5. Click **Deploy Web Service**. Render provides your API URL (e.g. `https://campus-lost-found-api.onrender.com`).
+
+### 2. Frontend on Vercel
+1. Log in to [Vercel](https://vercel.com) and click **Add New...** -> **Project**.
+2. Import repository `pabbathivishnupranay-droid/Campus-Lost-Found`.
+3. Configure Project Settings:
+   - **Framework Preset**: Vite
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. Environment Variables:
+   - Add `VITE_API_URL` = `https://<your-render-service>.onrender.com`
+5. Click **Deploy**. Your app is live with SSL!
+

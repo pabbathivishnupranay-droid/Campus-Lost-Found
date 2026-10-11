@@ -1,7 +1,19 @@
 import axios from 'axios';
 
+const rawApiUrl = import.meta.env.VITE_API_URL || '';
+const normalizedBase = rawApiUrl ? rawApiUrl.replace(/\/+$/, '') : '';
+
+export const getAssetUrl = (url) => {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  const assetPath = url.startsWith('/') ? url : `/${url}`;
+  return normalizedBase ? `${normalizedBase}${assetPath}` : assetPath;
+};
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: normalizedBase ? `${normalizedBase}/api` : '/api',
 });
 
 // Request interceptor: attach JWT token if available

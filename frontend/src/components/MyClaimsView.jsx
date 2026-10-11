@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PackageCheck, Clock, CheckCircle2, XCircle, MapPin, Calendar, Loader2, RefreshCw } from 'lucide-react';
-import api from '../api/axiosInstance';
+import api, { getAssetUrl } from '../api/axiosInstance';
 
 export default function MyClaimsView({ onToast }) {
   const [claims, setClaims] = useState([]);
@@ -115,7 +115,7 @@ export default function MyClaimsView({ onToast }) {
                   <div className="flex items-start space-x-3 p-3 rounded-xl bg-slate-900/60 border border-white/5 mb-3">
                     {claim.item?.imageUrl ? (
                       <img
-                        src={claim.item.imageUrl}
+                        src={getAssetUrl(claim.item.imageUrl)}
                         alt={claim.item.title}
                         className="w-14 h-14 rounded-lg object-cover shrink-0"
                       />

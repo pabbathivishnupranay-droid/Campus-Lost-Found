@@ -11,6 +11,7 @@ import {
   Tag
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { getAssetUrl } from '../api/axiosInstance';
 
 export default function ItemCard({ item, onClaim, onDelete }) {
   const { user, isStaff } = useAuth();
@@ -66,7 +67,7 @@ export default function ItemCard({ item, onClaim, onDelete }) {
       <div className="relative aspect-video w-full bg-slate-900/80 overflow-hidden flex items-center justify-center border-b border-white/5">
         {item.imageUrl ? (
           <img
-            src={item.imageUrl}
+            src={getAssetUrl(item.imageUrl)}
             alt={item.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             onError={(e) => {
