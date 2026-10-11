@@ -2,12 +2,11 @@
 FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Cache dependencies
+# Copy pom.xml and source code
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
-
-# Copy sources and build jar
 COPY src ./src
+
+# Build production jar skipping tests
 RUN mvn clean package -DskipTests
 
 # Stage 2: Minimal JRE runtime
@@ -17,7 +16,7 @@ WORKDIR /app
 # Copy built artifact
 COPY --from=build /app/target/*.jar app.jar
 
-# Expose Render/default port
+# Expose Render default port
 EXPOSE 8080
 ENV PORT=8080
 
