@@ -5,8 +5,10 @@ import com.campus.lostfound.dto.ItemResponseDTO;
 import com.campus.lostfound.dto.UserSummaryDTO;
 import com.campus.lostfound.entity.Item;
 import com.campus.lostfound.entity.User;
+import com.campus.lostfound.entity.enums.ItemCategory;
 import com.campus.lostfound.entity.enums.ItemStatus;
 import com.campus.lostfound.entity.enums.Role;
+import com.campus.lostfound.exception.BadRequestException;
 import com.campus.lostfound.exception.ResourceNotFoundException;
 import com.campus.lostfound.repository.ItemRepository;
 import com.campus.lostfound.repository.UserRepository;
@@ -64,7 +66,21 @@ public class ItemService {
         String cleanCategory = (category != null && !category.trim().isEmpty() && !category.equalsIgnoreCase("ALL")) ? category.trim() : null;
         String cleanStatus = (status != null && !status.trim().isEmpty() && !status.equalsIgnoreCase("ALL")) ? status.trim() : null;
 
-        List<Item> items = itemRepository.searchItems(cleanQuery, cleanCategory, cleanStatus);
+        ItemCategory catEnum = null;
+        if (cleanCategory != null) {
+            try {
+                catEnum = ItemCategory.valueOf(cleanCategory.toUpperCase());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        ItemStatus statusEnum = null;
+        if (cleanStatus != null) {
+            try {
+                statusEnum = ItemStatus.valueOf(cleanStatus.toUpperCase());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        List<Item> items = itemRepository.searchItems(cleanQuery, catEnum, statusEnum);
         return items.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 

@@ -1,6 +1,8 @@
 package com.campus.lostfound.repository;
 
 import com.campus.lostfound.entity.Item;
+import com.campus.lostfound.entity.enums.ItemCategory;
+import com.campus.lostfound.entity.enums.ItemStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,16 +13,15 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    @Query(value = "SELECT * FROM items WHERE " +
-            "(:query IS NULL OR :query = '' OR MATCH(title, description, location_found) AGAINST(:query IN BOOLEAN MODE) OR title LIKE CONCAT('%', :query, '%') OR description LIKE CONCAT('%', :query, '%') OR location_found LIKE CONCAT('%', :query, '%')) " +
-            "AND (:category IS NULL OR :category = '' OR category = :category) " +
-            "AND (:status IS NULL OR :status = '' OR status = :status) " +
-            "ORDER BY created_at DESC", 
-            nativeQuery = true)
+    @Query("SELECT i FROM Item i WHERE " +
+            "(:query IS NULL OR :query = '' OR LOWER(i.title) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(i.description) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(i.locationFound) LIKE LOWER(CONCAT('%', :query, '%'))) " +
+            "AND (:category IS NULL OR i.category = :category) " +
+            "AND (:status IS NULL OR i.status = :status) " +
+            "ORDER BY i.createdAt DESC")
     List<Item> searchItems(
             @Param("query") String query,
-            @Param("category") String category,
-            @Param("status") String status
+            @Param("category") ItemCategory category,
+            @Param("status") ItemStatus status
     );
 
     List<Item> findByReportedByIdOrderByCreatedAtDesc(Long userId);
