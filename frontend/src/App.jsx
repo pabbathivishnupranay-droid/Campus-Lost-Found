@@ -11,7 +11,7 @@ import AuthModal from './components/AuthModal';
 import Toast from './components/Toast';
 import api from './api/axiosInstance';
 import { useAuth } from './context/AuthContext';
-import { Loader2, PackageOpen, Sparkles, AlertCircle } from 'lucide-react';
+import { Loader2, PackageOpen, Sparkles } from 'lucide-react';
 
 export default function App() {
   const { user } = useAuth();

@@ -75,6 +75,9 @@ public class ItemService {
     }
 
     public List<ItemResponseDTO> getMyItems(CustomUserDetails currentUser) {
+        if (currentUser == null) {
+            throw new BadRequestException("User must be authenticated.");
+        }
         List<Item> items = itemRepository.findByReportedByIdOrderByCreatedAtDesc(currentUser.getId());
         return items.stream().map(this::mapToDTO).collect(Collectors.toList());
     }

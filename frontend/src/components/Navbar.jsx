@@ -4,7 +4,6 @@ import {
   Compass, 
   PlusCircle, 
   ShieldCheck, 
-  User, 
   LogOut, 
   LogIn, 
   FileText, 

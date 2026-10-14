@@ -72,8 +72,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/uploads/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/items", "/api/items/*").permitAll()
                 .requestMatchers("/api/items/my").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/items", "/api/items/*").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/items").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/api/items/*").authenticated()
                 .requestMatchers(HttpMethod.PUT, "/api/claims/*/status").hasAnyRole("SECURITY", "ADMIN")

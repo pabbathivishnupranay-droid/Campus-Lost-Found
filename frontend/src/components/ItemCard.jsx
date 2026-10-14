@@ -4,7 +4,6 @@ import {
   Calendar, 
   User, 
   Trash2, 
-  ShieldCheck, 
   CheckCircle2, 
   Clock, 
   AlertCircle,

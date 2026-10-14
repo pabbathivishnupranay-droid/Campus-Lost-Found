@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   ShieldCheck, 
   Check, 
@@ -10,9 +10,9 @@ import {
   MapPin, 
   Calendar, 
   User, 
-  Mail,
-  Loader2,
-  RefreshCw
+  Mail, 
+  Loader2, 
+  RefreshCw 
 } from 'lucide-react';
 import api, { getAssetUrl } from '../api/axiosInstance';
 
@@ -22,7 +22,7 @@ export default function AdminClaimsView({ onToast }) {
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState(null);
 
-  const fetchClaims = async () => {
+  const fetchClaims = useCallback(async () => {
     setLoading(true);
     try {
       const response = await api.get('/claims');
@@ -32,23 +32,21 @@ export default function AdminClaimsView({ onToast }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [onToast]);
 
   useEffect(() => {
     fetchClaims();
-  }, []);
+  }, [fetchClaims]);
 
   const handleUpdateStatus = async (claimId, newStatus) => {
     setProcessingId(claimId);
     try {
-      const response = await api.put(`/claims/${claimId}/status`, {
+      await api.put(`/claims/${claimId}/status`, {
         status: newStatus,
       });
       onToast(`Claim has been ${newStatus.toLowerCase()} successfully!`, 'success');
-      // Update local claims state
-      setClaims((prev) =>
-        prev.map((c) => (c.id === claimId ? response.data : c))
-      );
+      // Refresh claims list to reflect updated claim and any auto-rejected conflicting claims
+      await fetchClaims();
     } catch (err) {
       onToast(err.response?.data?.message || 'Failed to update claim status.', 'error');
     } finally {

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { X, Upload, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { X, Upload, Loader2 } from 'lucide-react';
 import api from '../api/axiosInstance';
 
 const CATEGORIES = [

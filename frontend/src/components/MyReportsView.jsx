@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FileText, Loader2, RefreshCw } from 'lucide-react';
 import api from '../api/axiosInstance';
 import ItemCard from './ItemCard';
@@ -7,7 +7,7 @@ export default function MyReportsView({ onClaim, onDelete, onToast }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchMyReports = async () => {
+  const fetchMyReports = useCallback(async () => {
     setLoading(true);
     try {
       const response = await api.get('/items/my');
@@ -17,11 +17,11 @@ export default function MyReportsView({ onClaim, onDelete, onToast }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [onToast]);
 
   useEffect(() => {
     fetchMyReports();
-  }, []);
+  }, [fetchMyReports]);
 
   const handleDelete = async (itemId) => {
     await onDelete(itemId);

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { PackageCheck, Clock, CheckCircle2, XCircle, MapPin, Calendar, Loader2, RefreshCw } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { PackageCheck, Clock, CheckCircle2, XCircle, MapPin, Loader2, RefreshCw } from 'lucide-react';
 import api, { getAssetUrl } from '../api/axiosInstance';
 
 export default function MyClaimsView({ onToast }) {
   const [claims, setClaims] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchMyClaims = async () => {
+  const fetchMyClaims = useCallback(async () => {
     setLoading(true);
     try {
       const response = await api.get('/claims/my');
@@ -16,11 +16,11 @@ export default function MyClaimsView({ onToast }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [onToast]);
 
   useEffect(() => {
     fetchMyClaims();
-  }, []);
+  }, [fetchMyClaims]);
 
   const getStatusBadge = (status) => {
     switch (status) {
