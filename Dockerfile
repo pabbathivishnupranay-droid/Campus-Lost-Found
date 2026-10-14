@@ -7,7 +7,7 @@ COPY backend/pom.xml .
 COPY backend/src ./src
 
 # Build production jar skipping tests
-RUN mvn clean package -DskipTests
+RUN mvn clean package -Dmaven.test.skip=true
 
 # Stage 2: Minimal JRE runtime
 FROM eclipse-temurin:17-jre-alpine

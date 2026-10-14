@@ -59,12 +59,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("Should successfully register user and return JWT token")
     void shouldRegisterUserSuccessfully() {
-        RegisterRequest request = RegisterRequest.builder()
-                .name("Alex Student")
-                .email("alex@campus.edu")
-                .password("password123")
-                .role(Role.STUDENT)
-                .build();
+        RegisterRequest request = new RegisterRequest("Alex Student", "alex@campus.edu", "password123", Role.STUDENT);
 
         when(userRepository.existsByEmail("alex@campus.edu")).thenReturn(false);
         when(passwordEncoder.encode("password123")).thenReturn("encoded_password");
@@ -85,12 +80,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("Should throw BadRequestException when email is already registered")
     void shouldThrowWhenEmailAlreadyExists() {
-        RegisterRequest request = RegisterRequest.builder()
-                .name("Alex Student")
-                .email("alex@campus.edu")
-                .password("password123")
-                .role(Role.STUDENT)
-                .build();
+        RegisterRequest request = new RegisterRequest("Alex Student", "alex@campus.edu", "password123", Role.STUDENT);
 
         when(userRepository.existsByEmail("alex@campus.edu")).thenReturn(true);
 
@@ -101,10 +91,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("Should successfully login user with valid credentials")
     void shouldLoginSuccessfully() {
-        LoginRequest request = LoginRequest.builder()
-                .email("alex@campus.edu")
-                .password("password123")
-                .build();
+        LoginRequest request = new LoginRequest("alex@campus.edu", "password123");
 
         Authentication auth = mock(Authentication.class);
         CustomUserDetails userDetails = new CustomUserDetails(sampleUser);
